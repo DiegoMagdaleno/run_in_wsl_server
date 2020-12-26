@@ -10,13 +10,15 @@ pub fn find_at_path(path: &str, mime_type: &str) -> Option<Vec<String>> {
     let file = File::open(path).unwrap();
     let reader = BufReader::new(file);
 
+    /* Find the line in the cache that allows us to open said filetype */
     for line in reader.lines() {
         let raw_line = line.unwrap();
         if raw_line.contains(mime_type) {
             line_match = raw_line
         }
     }
-
+    
+    /* Split and push values to vector */
     if !line_match.is_empty() {
         let replace_pattern = format!("{}=", mime_type);
         line_match = line_match.replace(&replace_pattern, "");
