@@ -10,3 +10,6 @@ edition = "2018"
 dirs = "3.0.1"
 regex = "1"
 mime_guess = { git = "https://github.com/DiegoMagdaleno/mime_guess", branch="master" }
+tokio = { version = "0.2", features = ["full"] }
+warp = "0.2"
+freedesktop_entry_parser = "1.1.1"
