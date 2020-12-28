@@ -6,11 +6,15 @@ mod lib {
 }
 
 fn main() {
-    let matches = lib::finder::get_capable_at_location("text/plain");
-    
-    if let Some(x) = matches {
-        if let Some(p) = lib::parser::parse_entries(x) {
-            println!("{:#?}", p);
+    if let Some(whatever) = mime_guess::from_ext("cock").first_raw() {
+        if let Some(x) = lib::finder::get_capable_at_location(whatever) {
+            if let Some(p) = lib::parser::parse_entries(x) {
+                println!("{:#?}", p);
+            }
         }
+    } else {
+        println!("No matches");
     }
+
+
 }

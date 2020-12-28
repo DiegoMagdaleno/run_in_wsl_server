@@ -51,7 +51,10 @@ pub fn get_capable_at_location(mime_type: &str) -> Option<HashMap<&str, Vec<Stri
         }
     }
 
-    let format_path = format!("{}/.local/share/applications/mimeinfo.cache",dirs::home_dir().unwrap().to_str().unwrap());
+    let format_path = format!(
+        "{}/.local/share/applications/mimeinfo.cache",
+        dirs::home_dir().unwrap().to_str().unwrap()
+    );
     let local_path = Path::new(&format_path);
     if local_path.exists() {
         let matches_at_local = find_at_path(local_path.as_os_str().to_str().unwrap(), mime_type);
@@ -63,7 +66,7 @@ pub fn get_capable_at_location(mime_type: &str) -> Option<HashMap<&str, Vec<Stri
         }
     }
 
-    if matches_map.get("local").unwrap().len() > 0 || matches_map.get("global").unwrap().len() > 0{
+    if matches_map.get("local").unwrap().len() > 0 || matches_map.get("global").unwrap().len() > 0 {
         Some(matches_map)
     } else {
         None
