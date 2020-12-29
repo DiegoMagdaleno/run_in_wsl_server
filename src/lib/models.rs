@@ -23,3 +23,12 @@ impl Application {
         return &self.description;
     }
 }
+
+pub fn load(applications_serialized: Vec<Application>) -> Vec<crate::server::server::runinwsl_proto::FileReply> {
+    applications_serialized.into_iter()
+    .map(|app| crate::server::server::runinwsl_proto::FileReply {
+        name: app.get_name().to_string(),
+        exec: app.get_exec().to_string(),
+        description: app.get_desc().to_string(),
+    }).collect()
+}
