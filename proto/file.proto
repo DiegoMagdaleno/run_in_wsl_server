@@ -2,8 +2,8 @@ syntax = "proto3";
 
 package runinwsl;
 
-service FileBuilder {
-    rpc GetFileTypes (FileRequest) returns (FileReply);
+service RunInWSL {
+    rpc GetFileTypes (FileRequest) returns (stream FileReply);
 }
 
 message FileRequest {
