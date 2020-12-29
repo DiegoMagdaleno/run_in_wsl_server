@@ -16,16 +16,20 @@ pub fn parse_entries(entry_location_map: HashMap<&str, Vec<String>>) -> Option<V
     for gunparsed in &paths_of_global_services {
         let parse_freedesktop = freedesktop_entry_parser::parse_entry(gunparsed).ok()?;
         let desktop_entry_sec = parse_freedesktop.section("Desktop Entry");
+        let (mut freedesk_desc, mut freedesk_exec, mut freedesk_name) = ("", "", "");
 
-        let freedesk_name = desktop_entry_sec
-            .attr("Name")
-            .expect("Unable to parse name entry");
-        let freedesk_exec = desktop_entry_sec
-            .attr("Exec")
-            .expect("Unable to parse exec instruction");
-        let freedesk_desc = desktop_entry_sec
-            .attr("Comment")
-            .expect("Unable to parse comment section");
+        if let Some(has_name) = desktop_entry_sec.attr("Name") {
+            freedesk_name = has_name;
+        }
+
+        if let Some(has_exec) = desktop_entry_sec.attr("Exec") {
+            freedesk_exec = has_exec;
+        }
+
+        if let Some(has_comment) = desktop_entry_sec.attr("Comment") {
+            freedesk_desc = has_comment;
+        }
+
 
         let desktop_entry = Application::new(freedesk_name, freedesk_exec, freedesk_desc);
         desktop_parsed_entries.push(desktop_entry);

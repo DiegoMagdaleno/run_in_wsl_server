@@ -89,9 +89,9 @@ pub async fn start_server(opts: ServerOptions) -> Result<(), Box<dyn std::error:
     println!("Remote RunInWSLServer is listening on {}", addr);
 
     Server::builder()
-    .add_service(RunInWslServer::new(runner_server))
-    .serve(addr)
-    .await?;
+        .add_service(RunInWslServer::new(runner_server))
+        .serve(addr)
+        .await?;
 
     Ok(())
 }
