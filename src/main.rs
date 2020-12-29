@@ -5,16 +5,51 @@ mod lib {
     pub mod models;
 }
 
-fn main() {
-    if let Some(whatever) = mime_guess::from_ext("cock").first_raw() {
-        if let Some(x) = lib::finder::get_capable_at_location(whatever) {
-            if let Some(p) = lib::parser::parse_entries(x) {
-                println!("{:#?}", p);
-            }
+#[derive(Debug)]
+struct FileService;
+
+pub mod runinwsl {
+    tonic::include_proto!("runinwsl");
+}
+
+use runinwsl::file_builder_server::{FileBuilder, FileBuilderServer};
+use runinwsl::{FileReply, FileRequest};
+
+use futures_core::Stream;
+use std::pin::Pin;
+use std::sync::Arc;
+use tokio::sync::mpsc;
+use tonic::{Request, Response, Status};
+use std::path::Path;
+use structopt::StructOpt;
+
+#[derive(StructOpt, Debug)]
+#[structopt(name = "riwserver")]
+struct ApplicationArguments {
+    #[structopt(flatten)]
+    pub subcommand: SubCommand,
+}
+
+#[derive(Debug, StructOpt)]
+pub enum SubCommand {
+    #[structopt(name = "server")]
+    StartServer(ServerOptions)
+}
+
+#[derive(Debug, StructOpt)]
+pub struct ServerOptions {
+    #[structopt(long, default_value = "127.0.0.1:42069")]
+    pub server_listen_addr: String,
+}
+
+fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let args = ApplicationArguments::from_args();
+
+    match args.subcommand {
+        SubCommand::StartServer(opts) => {
+            println!("Started the server at {:?}", opts.server_listen_addr);
         }
-    } else {
-        println!("No matches");
     }
 
-
+    Ok(())
 }

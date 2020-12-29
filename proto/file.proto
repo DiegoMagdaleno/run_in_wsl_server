@@ -1,5 +1,17 @@
 syntax = "proto3";
 
+package runinwsl;
+
+service FileBuilder {
+    rpc GetFileTypes (FileRequest) returns (FileReply);
+}
+
 message FileRequest {
     string filePath = 1;
+}
+
+message FileReply {
+    string name = 1;
+    string exec = 2;
+    string description = 3;
 }
